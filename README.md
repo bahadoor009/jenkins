@@ -1,1 +1,40 @@
-# jenkins
+-What is Jenkins?<br>
+-What is CI/CD  ( Continuous Integration Continuous Delivery )<br>
+-Stages in CI/CD<br>
+-Creating CI/CD Infrastructure in AWS<br>
+-Installing Jenkins in EC2 Machine<br>
+-How to run a sample job in Jenkins?<br>
+-Install Tomcat on AWS Environment
+-Performing continuous download
+-Performing continuous build
+-How to install Plug-in
+-Performing continuous Deployment
+-Importance of Context Path
+-Performing continuous download
+-Performing continuous build
+-How to install Plug-in
+-Performing continuous Deployment
+-Importance of Context Path
+-How to call one job from another job
+-Copy Artifact Plugin
+-Performing all the five Stages in CI-CD
+-How to create new user in Jenkins
+-Types of Roles – Global Role Item / Project Role
+-Role based authorization Strategy Plugin
+-Need for Master Slave configuration
+-Establish password-less connection between Master and Slave Machine
+-Creating new node in Jenkins
+-Run the job in node machine
+-What is Pipeline Job?
+-Advantages of Pipeline Job
+-Build pipeline plug-in
+-Generating the Groovy code
+-Perform CI/CD Stages using groovy code
+-What is multibranch Pipeline?
+-Triggering the pipeline job automatically
+-Email Integration in Jenkins
+-Trigger the job periodically
+-Wait for the approval from delivery head, before moving it to production
+
+
+
