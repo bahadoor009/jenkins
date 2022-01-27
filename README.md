@@ -658,6 +658,342 @@ Run the job, In console output, we can see the job is executed in slave machine<
 
 
 
+# PIPELINE 
+
+Implementing CI-CD  from the level of code.
+This code is created using groovy script, and this file is also called as jenkins file.
+
+
+Advantges:
+
+As pipeline is implemented as code, it gives the developers the ability to upload into vesion controlling system from where they can edit and review the script.
+
+
+
+Pipelines can accept interactive human input before continuning with specific stage in CI-CD
+
+
+Ex: Before deployment into production environment, pipeline script can accept  approval from the delivery head and then continue.
+
+
+
+
+Pipeline script support complex realtime scenario where we can implement conditional statements, loops etc.
+
+Ex: If testing passes, we want to go to delivery. If its fails, we want to send automated emails.
+
+
+
+Scripted pipeline syntax:<br>
+-------------------------<br>
+node ( 'master/slave')<br>
+{<br>
+         stage(' Stage in CI-CD')<br>
+           {<br>
+                   Groovy  code for implementing the stage<br>
+           }<br>
+}<br>
+
+
+
+
+<br>
+Install Build pipeline plugin<br>
+
+Ex:<br>
+
+Create new item ---  ScriptedPipeline<br>
+select pipeline  --OK<br>
+Pipeline tab,<br>
+
+pipeline syntax<br>
+
+Sample step - node: Allocate node<br>
+ label - master<br>
+
+Generate piplescript  -- copy the groovy code and paste in pipeline tab.<br>
+
+In pipeline syntax <br>
+
+Sample step - stage:Stage<br>
+Stage name - Continuous Download<br>
+Generate piplescript  -- copy the groovy code and paste in pipeline tab.<br>
+
+-----<br>
+
+In pipeline syntax <br>
+
+Sample step - git:Git<br>
+Repository URL - https://github.com/sunildevops77/maven.git<br>
+Generate piplescript  -- copy the groovy code and paste in pipeline tab.<br>
+
+-------------
+
+Apply  --- Save --> Run the job<br>
+
+2nd stage<br>
+-----------------<br>
+We need to run   'mvn package' command.<br>
+This command can be executed as a shell script<br>
+
+
+In pipeline syntax:<br>
+
+Sample step - sh: Shell Script<br>
+Stage name - mvn package<br>
+
+Generate piplescript  -- copy the groovy code and paste in pipeline tab.<br>
+
+Save and run.<br>
+
+
+
+![profile png](https://user-images.githubusercontent.com/98414597/151335672-f822d11c-413d-42a2-9347-3cc82b3c0578.jpg)
+
+
+
+Step 3: Deployment<br>
+We need to establish password less SSH connection between  Dev server and QA Server<br>
+Connect to QA server using gitbash<br>
+
+Set the password for ubuntu<br>
+$ sudo passwd  ubuntu
+
+
+Edit sshd_config  ( Password authentication -- yes)
+$  cd /etc/ssh
+$ sudo vim sshd_config
+
+Go to insert mode
+
+) change password authentication to yes
+
+13) Save and quit :wq
+
+14) Restart the service
+$ sudo service ssh restart
+
+
+15) Connect to dev server using gitbash and generate  ssh keys
+
+$   ssh-keygen
+Overwrite ?  n
+
+
+18) copy the keys to QA server
+ssh-copy-id  ubuntu@private_ip_qa_server
+ssh-copy-id  ubuntu@172.31.47.36
+
+
+
+Test are you able to connect to qa?
+$ ssh ubuntu@172.31.47.36
+
+
+
+
+
+$ exit   ( To come back to dev server)
+
+
+Now, you can copy the files from dev server to QA server
+
+Create a file in dev server
+$ cat > file1
+fdsfgfdsgfdsgd
+Ctrl +d
+$ 
+
+To copy the file in QA server
+Syntax:
+$ scp  source   destination
+
+$ scp  file1  ubuntu@172.31.47.36:/tmp/file2
+
+
+file1  will be copied into qa server with the name file2
+
+Lets check for the file, by connecting to qa server
+$ ssh ubuntu@172.31.47.36
+$ cd /tmp
+$ ls
+$ cat  file2
+$ exit
+
+++++++++++++++++++++++++++
+Deployment is nothing but , copying the war file from dev server to qa server
+Get the location of war file from log 
+
+$ scp  /home/ubuntu/.jenkins/workspace/ScriptedPipeline/webapp/target/webapp.war   ubuntu@172.31.47.36:/var/lib/tomcat8/webapps/qaenv.war
+
+Get the groovy code of scp command
+
+Sample Step - sh: Shell Script
+Shell script --   copy the scp command which we have created
+
+
+Generate the code and paste in pipeline script
+
+Apply ---  save -- run
+
+Deployment fails
+Observe  the log file  ( permissions denied )
+
+To give the permissions
+Connect to qa server  using git bash
+$ cd  /var/lib
+$ ls -ld tomcat8
+
+( Observation:   tomcat8  directory  -- others is not having write permissions )
+
+$ sudo  chmod  -R  o+w   tomcat8/
+
+Now run the job
++++++++++++++++++++=
+Connect qa server and check
+
+
++++++++++++++++++++++++++++++++++
+4th Stage: Continuous testing
+In pipeline --  add a new stage
+
+
+Shell script --   echo "Tesing Passed"
+
+Generate the groovy code  and copy paste
+
+Apply -- save-- run
+
++++++++++++++++++++++++++++++++++++
+5th Stage : continuous delivery
+
+In pipeline --  add  a new stage
+
+Copy the code in the - continuousdeployment and change the qa_ipaddress to prod_Ip_address
+Also change the context path  -  prodenv
+
+( We need to establish password less ssh between devserver and prodserver)
+( we should change tomcat8 permissions )
+
+Connect to prod server using gitbash
+
+Set the password for ubuntu
+$ sudo passwd  ubuntu
+
+
+Edit sshd_config  ( Password authentication -- yes)
+$  cd /etc/ssh
+$ sudo vim sshd_config
+
+Go to insert mode
+
+) change password authentication to yes
+
+13) Save and quit :wq
+
+14) Restart the service
+$ sudo service ssh restart
+
+
+15) Connect to dev server using gitbash and generate  ssh keys
+
+$   ssh-keygen
+Overwrite ?  n
+
+
+18) copy the keys to Prod server
+ssh-copy-id  ubuntu@private_ip_prod_server
+ssh-copy-id  ubuntu@172.31.40.134
+
+Test are you able to connect to prod?
+$ ssh ubuntu@172.31.40.134
+$ exit   ( To come back to dev server)
+
+_______________
+
+To give the permissions
+Connect to prod server  using git bash
+$ cd  /var/lib
+$ ls -ld tomcat8
+
+( Observation:   tomcat8  directory  -- others is not having write permissions )
+
+$ sudo  chmod  -R  o+w   tomcat8/
+
+Now run the job
+Connect prod server and check
+
+http://13.126.45.247:8080/prodenv/
+
++++++++++++++++++++++++++++++++++++++++++++++
+
+Script
+---------
+node('master')
+
+{
+
+stage('Continuous Download') 
+   
+	 {
+	
+    git 'https://github.com/sunildevops77/maven.git'
+    
+	}
+
+stage('Continuous build') 
+   
+	 {
+	
+   sh label: '', script: 'mvn package'
+	}
+
+stage('Continuous Deployment') 
+   
+	 {
+	
+ sh label: '', script: 'scp  /home/ubuntu/.jenkins/workspace/ScriptedPipeline/webapp/target/webapp.war  ubuntu@172.31.21.16:/var/lib/tomcat8/webapps/qaenv.war'
+	}
+stage('Continuous Testing') 
+   
+	 {
+	sh label: '', script: 'echo "Testing Passed"'
+	}
+stage('Continuous Delivery') 
+   
+	 {
+	sh label: '', script: 'scp  /home/ubuntu/.jenkins/workspace/ScriptedPipeline/webapp/target/webapp.war  ubuntu@172.31.28.16:/var/lib/tomcat8/webapps/prodenv.war'
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
