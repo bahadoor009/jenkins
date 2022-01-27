@@ -459,65 +459,207 @@ sudo service tomcat8 restart
 
 # Creating users in Jenkins
 
-1 Open the dashboard of jenkins
+1) Open the dashboard of jenkins
 
-2 click on manage jenkins
+2) click on manage jenkins
 
-3 click on manage users
+3) click on manage users
 
-4 clcik on create users
+4) clcik on create users
 
-5 enter user credentials
+5) enter user credentials
 
-Creating roles and assgning
-==============================
-1 Install "role based authorization strategy" plugin
+# Creating roles and assgning
 
-+++++++++++++++++++++++++
+1) Install "role based authorization strategy" plugin<br>
+2) go to dashboard-->manage jenkins <br>
+3) click on configure global security<br>
+4 check enable security checkbox<br>
+5) go to authorization section-->click on role based    strategy  radio button<br>
+6) apply-->save<br>
+7) go to dashboard of jenkins<br>
+8) click on manage jenkins<br>
+9) click on manage and assign roles<br>
+10) click on mange roles<br>
+11) go to global roles and create a role "employee"<br>
+12) for this employee in overall give read access in view section give all access<br>
+13) go to project roles-->Give the role as developer and patter as Dev.* (ie developer role can access only those jobs whose name start with Dev)<br>
+14) similarly create another role as tester and assign    the pattern as "Test.*"<br>
+15) give all permisiinons to developrs and tester<br>
+16) apply--save<br>
+17) click on assign roles<br>
+18) go to global roles and add user1 and user2<br> 
+19) check user1 nad user2 as employees<br>
+20) go to item roles<br>
+21) add user1 and user2<br>
+22) check user1 as developer and user2 as tester<br>
+23) apply-->save<br>
 
-6 go to dashboard-->manage jenkins
-7 click on configure global security
-8 check enable security checkbox
-9 go to authorization section-->click on role based    strategy  radio button
-10 apply-->save
-
-++++++++++++++++++++++++++
-
-
-11 go to dashboard of jenkins
-12 click on manage jenkins
-13 click on manage and assign roles
-14 click on mange roles
-15 go to global roles and create a role "employee"
-16 for this employee in overall give read access
-   		 in view section give all access
-
-
-
-17 go to project roles-->Give the role as developer
-   and patter as Dev.* (ie developer role can access
-   only those jobs whose name start with Dev)
-18 similarly create another role as tester and assign    the pattern as "Test.*"
-19 give all permisiinons to developrs and tester
-20 apply--save
-
-
-21 click on assign roles
-22 go to global roles and add user1 and user2 
-23 check user1 nad user2 as employees
-24 go to item roles
-25 add user1 and user2
-26 check user1 as developer and user2 as tester
-27 apply-->save
-
-Restart Jenkins
-http://13.233.127.59:8080/restart
+Restart Jenkins<br>
 
 If we login into jenkins as user1 we can access on the development related jobs and user2 can access only the testing related jobs
 
 
 
-++++++++++++++++++++++++++++++
+---------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+# Master - Slave configuration
+
+
+Same version of java should exist.<br>
+Master and slave should have password less SSH<br>
+
+<b>Step 1: Create slave machine  , connect to slave</b><br>
+
+1) Update the apt repository<br>
+sudo apt-get update<br>
+
+
+2)  sudo apt install openjdk-8-jdk -y<br>
+
+
+3) Check the Java Version<br>
+java -version<br>
+
+
+<b>We need to establish password less connection between Dev server and Slave machine</b>
+
+Connect to slave<br>
+4) Check you user<br>
+$ whoami       (  ubuntu )<br>
+
+
+5) set password  for  ubuntu  user<br>
+syntax: sudo  passwd  <user_name><br>
+Ex:        sudo passwd ubuntu<br>
+enter password<br>
+
+
+$  cd /etc/ssh<br>
+
+$ ls   ( we get list of files )   Look for   sshd_config<br>
+
+To edit sshd_config<br>
+$ sudo vim sshd_config<br>
+
+Go to insert mode<br>
+
+6) change password authentication to yes<br>
+
+7) Save and quit :wq<br>
+
+8) Restart the service<br>
+$ sudo service ssh restart<br>
+
+Lets test the connection<br>
+
+
+9) Connect to the development server  ( Master )<br>
+
+10) connect to slave server through dev server<br>
+ssh ubuntu@private_ip_slave_machine<br>
+
+$ ssh ubuntu@172.31.1.107<br>
+
+
+
+exit  ( to come back to master )<br>
+
+--------------------------------------------------------------------------------------
+
+
+11)  To connect to slave  without password<br>
+$ ssh-keygen      ( In master)<br>
+
+
+12) copy the keys to slave server<br>
+ssh-copy-id  ubuntu@private_ip_slave_server<br>
+ssh-copy-id  ubuntu@172.31.1.107<br>
+
+
+
+13) now we are able to connect to the slave user without password<br>
+$  ssh ubuntu@172.31.1.107<br>
+
+
+Download slave.jar in slave machine<br>
+
+
+sudo  wget http://172.31.41.7:8080/jnlpJars/slave.jar<br>
+
+
+
+Check the file is download or not<br>
+1) ls<br>
+
+check the file permissions<br>
+2) ls -l<br>
+
+we want    rwxrw-r--<br>
+
+3) Give execute permissions of this file<br>
+sudo chmod u+x slave.jar<br>
+
+
+
+4) Create an empty folder which will work like workspace for jenkins to use on the slave machine<br>
+ mkdir workspace<br>
+ cd workspace<br>
+ pwd( note the path of the workspace )-- /home/ubuntu/workspace<br>
+
+
+
+-----------------------------------------------------------------------------------------
+
+
+
+
+# Creating nodes in Jenkins
+
+Open the dashboard of jenkins<br>
+
+manage jenkins --- manage nodes<br>
+
+7) Click on new node ----  node name -  Myslave<br>
+		       - select permanent agent<br>
+
+Remote root directory   -/home/ubuntu/workspace<br>
+Label - Slave_lab<br>
+
+
+10) Go to Launch method<br>
+Select Launch agent via execution of command on the controller<br>
+
+11) In Launch command<br>
+ssh ubuntu@private_ip_of_slave java -jar slave.jar<br>
+ssh ubuntu@172.31.1.107     java  -jar   slave.jar<br>
+
+
+13) Click on save<br>
+
+
+# Configure job to run on slave
+
+
+14) Select Testing Job<br>
+
+15) Go to Configure  --> General Tab<br>
+
+17) Check Restrict where this project can be run<br>
+
+18) Enter Label Expression ( Slave_lab)<br>
+
+Apply ---> Save  <br>
+Run the job, In console output, we can see the job is executed in slave machine<br>
+
+------------------------------------------------------------------------------------
+
+
 
 
 
