@@ -57,8 +57,6 @@ Stage 5: Continuous Delivery<br>
 1-4----Continuous Integration<br>
   5----Continuous Delivery<br>
   
--------------------------------------------------------------------------
-
 
 # Install Jenkins in AWS Instance
 
