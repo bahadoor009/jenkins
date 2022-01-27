@@ -748,9 +748,6 @@ Save and run.<br>
 
 
 
-![profile png](https://user-images.githubusercontent.com/98414597/151335672-f822d11c-413d-42a2-9347-3cc82b3c0578.jpg)
-
-
 
 Step 3: Deployment<br>
 We need to establish password less SSH connection between  Dev server and QA Server<br>
