@@ -153,7 +153,7 @@ Click on Console Output<br>
 
 --------------------------------------------------------------------------------
 
-Install TOMCAT In QA & Production Server<br>
+# Install TOMCAT In QA & Production Server
 
 1) Select QA Server and connect<br>
 
@@ -326,19 +326,6 @@ public_ip_Qa_server:8080/qaenv<br>
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 After testing completed we need to clone the testing code form github<br>
 https://github.com/sunildevops77/TestingNew.git<br>
 
@@ -388,7 +375,7 @@ Install Plugins<br>
 
 5) Install the plugin<br>
 
-Stage 5 : Continous Delivery<br>
+<b>Stage 5 : Continous Delivery</b><br>
 
 1) Go to Development job <br>
 
@@ -508,7 +495,7 @@ If we login into jenkins as user1 we can access on the development related jobs 
 
 
 
-# Master - Slave configuration
+### Master - Slave configuration
 
 
 Same version of java should exist.<br>
