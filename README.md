@@ -287,44 +287,42 @@ Click on avaiable section<br>
 
 Search for plugin ( deploy to container )<br>
 
-Select that plugin and click on install without restart.
+Select that plugin and click on install without restart.<br>
 
-20) Click on post build actions of the development job
+20) Click on post build actions of the development job<br>
 
-21) Click on add post build actions
+21) Click on add post build actions<br>
 
-22) Click on deploy war/ear to container
+22) Click on deploy war/ear to container<br>
 
-23) Enter the path of the war file (or)
- we can give **/*.war in war/ear files.
+23) Enter the path of the war file (or)<br>
+ we can give **/*.war in war/ear files.<br>
 
-24) Context path: qaenv
+24) Context path: qaenv<br>
 
-25) Containers : select tomcat 8
+25) Containers : select tomcat 8<br>
 
-Credentials : Click on add
+Credentials : Click on add<br>
 
-select jenkins
+select jenkins<br>
 
-enter tomcat user name and password
+enter tomcat user name and password<br>
 
-Click on add
+Click on add<br>
 
-Select credentials.
+Select credentials.<br>
 
-give the private ip of the QA server.
+give the private ip of the QA server.<br>
 
 http://private_ip:8080
-http://172.31.34.103:8080
 
+26) Click on apply and save<br>
 
-26) Click on apply and save
+27) Run the job<br>
 
-27) Run the job
+28) To access the home page<br>
 
-28) To access the home page
-
-public_ip_Qa_server:8080/qaenv
+public_ip_Qa_server:8080/qaenv<br>
 
 
 
