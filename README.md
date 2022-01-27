@@ -1,4 +1,4 @@
--What is Jenkins?<br>
+- What is Jenkins?<br>
 -What is CI/CD  ( Continuous Integration Continuous Delivery )<br>
 -Stages in CI/CD<br>
 -Creating CI/CD Infrastructure in AWS<br>
