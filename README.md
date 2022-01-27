@@ -488,14 +488,11 @@ If we login into jenkins as user1 we can access on the development related jobs 
 
 
 
----------------------------------------------------------------------------------------------------
 
 
 
 
-
-
-### Master - Slave configuration
+# Master-Slave configuration
 
 
 Same version of java should exist.<br>
