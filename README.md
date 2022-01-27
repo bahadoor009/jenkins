@@ -207,7 +207,6 @@ sudo service tomcat8 restart<br>
 Prod Instance<br>
 <user username="learning" password="bahadoor" roles="manager-script,manager-status,manager-gui"/><br>
 
---------------------------------------------------------------------------------------------
 
 
 First Start All the AWS Machines.<br>
@@ -487,11 +486,6 @@ Restart Jenkins<br>
 If we login into jenkins as user1 we can access on the development related jobs and user2 can access only the testing related jobs
 
 
-
-
-
-
-
 # Master-Slave configuration
 
 
@@ -598,12 +592,9 @@ sudo chmod u+x slave.jar<br>
 
 
 
------------------------------------------------------------------------------------------
-
-
-
 
 # Creating nodes in Jenkins
+
 
 Open the dashboard of jenkins<br>
 
