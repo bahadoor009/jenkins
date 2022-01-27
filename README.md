@@ -141,7 +141,197 @@ Click on execute Shell<br>
 In Command Box Enter echo " Hello Jenkins"<br>
 Click on Console Output<br>
 
--------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+--------------------------------------------------------------------------------
+
+Install TOMCAT In QA & Production Server<br>
+
+1) Select QA Server and connect<br>
+
+2) Copy the SSH Command<br>
+
+3) Open GIT Bash & paste the SSH Command<br>
+
+Press Yes<br>
+
+4) Update the apt repository <br>
+sudo apt-get update<br>
+
+5) Install tomcat8<br>
+sudo apt-get install -y tomcat8<br>
+
+After this we need to install one more package<br>
+sudo apt-get install -y tomcat8-admin<br>
+
+6) Check the tomcat is intall or not<br>
+
+Copy the public IP of the QA Server then paste in the browser and in the end enter :8080 <br>
+
+qa_server_public_ip:8080<br>
+
+Setting the path of tomcat in jenkins<br>
+
+7) enter linux command in QA Server  -   cd /etc/tomcat8/<br>
+
+8) enter linux command in QA Server  -   ls<br>
+
+9) You will find the file tomcat-users.xml<br>
+
+10) Open the file -- sudo vim tomcat-users.xml<br>
+
+11) In the end we need to add one statement <br>
+<user username="training" password="bahadoor" roles="manager-script,manager-status,manager-gui"/><br>
+
+save and quit <br>
+
+press esc <br>
+
+type :wq <br>
+
+press enter<br>
+
+12) When ever we do any changes done in any service we need to restart the service<br>
+sudo service tomcat8 restart<br>
+
+13) After this the same above 12 steps we need to do in the prod server also.<br>
+
+Prod Instance<br>
+<user username="learning" password="bahadoor" roles="manager-script,manager-status,manager-gui"/><br>
+
+--------------------------------------------------------------------------------------------
+
+
+First Start All the AWS Machines.<br>
+
+Connect Dev Server<br>
+
+Start the Jenkins <br>
+
+java -jar jenkins.war <br>
+
+<b>Stage 1 : Continuous Download START CI-CD</b><br>
+
+1) Create New item as free style project<br>
+
+2) Click on source code managment <br>
+
+3) Select GIT<br>
+
+4) Enter the URL of github reposiditory<br>
+https://github.com/sunildevops77/maven.git<br>
+
+5) Click on apply and save<br>
+
+6) Run the Job<br>
+
+7) Check the console output.<br>
+
+8) Connect to the dev server<br>
+
+9) Go to the location where code is downloaded<br>
+sudo su -<br>
+
+cd path of the folder<br>
+
+ls<br>
+
+<b>Stage 2 : Continuous Build</b><br>
+
+Convert the java files in to artifact ( .war file)
+
+10) Click on configure of the same job<br>
+
+11) Go to Build Section<br>
+
+12) Click on add build step<br>
+
+13) Click on Invoke top level maven targets<br>
+
+14) Enter the goal as  package<br>
+
+15) click on apply and save<br>
+
+16) Run the Job<br>
+
+17) Click on number & click on console output<br>
+
+18) Copy the path of the war file and check the file in the linux machine<br>
+sudo su -<br>
+
+cd path<br>
+
+ls<br>
+
+<b>Stage 3 :Continuous Deployment</b><br> 
+
+Now we need to deploy the war file into the QA Server.<br>
+
+19) For this we need to install "deploy to container" plugin.<br>
+ 
+Go to Dasboard<br>
+
+Click on manage jenkins<br>
+
+Click on manage plugins<br>
+
+Click on avaiable section<br>
+
+Search for plugin ( deploy to container )<br>
+
+Select that plugin and click on install without restart.
+
+20) Click on post build actions of the development job
+
+21) Click on add post build actions
+
+22) Click on deploy war/ear to container
+
+23) Enter the path of the war file (or)
+ we can give **/*.war in war/ear files.
+
+24) Context path: qaenv
+
+25) Containers : select tomcat 8
+
+Credentials : Click on add
+
+select jenkins
+
+enter tomcat user name and password
+
+Click on add
+
+Select credentials.
+
+give the private ip of the QA server.
+
+http://private_ip:8080
+http://172.31.34.103:8080
+
+
+26) Click on apply and save
+
+27) Run the job
+
+28) To access the home page
+
+public_ip_Qa_server:8080/qaenv
+
+
+
+
+
+
+
 
 
 
