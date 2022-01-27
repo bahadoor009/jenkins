@@ -338,3 +338,176 @@ public_ip_Qa_server:8080/qaenv<br>
 
 
 
+
+After testing completed we need to clone the testing code form github<br>
+https://github.com/sunildevops77/TestingNew.git<br>
+
+
+Step 1: Connect to Devserver from git bash<br>
+Step 2: Start Jenkins    ( java  -jar  jenkins.war )<br>
+Step 3: Create new item  ( Name - testing )<br>
+	Source code management tab,  Git<br>
+Repository URL - https://github.com/sunildevops77/TestingNew.git<br>
+
+Apply -- Save<br>
+
+Step 4: Run the job.<br>
+Step 5: Check the path of the files which are downloaded.<br>
+	/home/ubuntu/.jenkins/workspace/testing<br>
+Step 6: Configure the same job ( testing )<br>
+	Build -- Add build Step  -- Execute shell<br>
+ 	( Command: java -jar  testing.jar )<br>
+	Command:   echo " Testing passed"<br>
+
+
+
+Now both are independent job.<br>
+To call testing job  after development job is completed<br>
+
+Go to first job ( demo ) --  configure <br>
+Post build actions -- add post build action -- build other project -<br> 
+Projects to build - testing ( name of the job)<br>
+
+-----------------------------------------------------------------------------
+
+
+Copying artifacts from development job to testing job<br>
+
+The artifacts (war) created by the development job should be passed to the testing job so that the testing job can deploy that into tomcat in the prod environment.<br>
+
+
+Install Plugins<br>
+
+1) Go to Jenkins dashboard<br>
+
+2) Go to manage jenkins<br>
+
+3) Click on Manage plugins<br>
+
+4) Search for "Copy Artifact"  plugin<br>
+
+5) Install the plugin<br>
+
+Stage 5 : Continous Delivery<br>
+
+1) Go to Development job <br>
+
+2) Go to Configure<br>
+
+3) Go to Post build actions tab<br>
+
+4) Click on add post build action<br>
+
+5) Click on Archive the artifacts<br>
+
+6) Enter **/*.war<br>
+
+7) Click on apply and save<br>
+
+8) Go to testing Job<br>
+
+9) Click on configure<br>
+
+10) Go to Build section<br>
+
+11) Click on add build steps<br>
+
+12) Click on copy artifacts from another project<br>
+
+13) Enter Development as project name<br>
+
+14) For Deployment Go to Post build actions section<br>
+
+15) Click on add post build action<br>
+
+16) Click on deploy war/ear to a container<br>
+
+17) Enter **/*.war in war/ear files<br>
+
+18) Context path : prodenv<br>
+
+19) Click on add container <br>
+
+20) Select tomcat 8<br>
+
+21) Select your Credentials<br>
+
+22) Enter private ip:8080 of the prod server<br>
+
+23) Click on Apply and save<br>
+
+
+
+----------------------------------------------------------------------
+
+1) enter linux command in Prod Server  -   cd /etc/tomcat8/
+
+2) enter linux command in prod Server  -   ls
+
+3) You will find the file tomcat-users.xml
+
+4) Open the file -- sudo vim tomcat-users.xml
+
+5) In the end we need to add one statement 
+<user username="learning" password="sunilsunil" roles="manager-script,manager-status,manager-gui"/>
+
+6)  we need to restart the service
+sudo service tomcat8 restart
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
