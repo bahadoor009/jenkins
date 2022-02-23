@@ -1,4 +1,4 @@
-# Learning Objectives
+# Jenkins
 
 - What is Jenkins?<br>
 - What is CI/CD  ( Continuous Integration Continuous Delivery )<br>
@@ -635,29 +635,6 @@ Run the job, In console output, we can see the job is executed in slave machine<
 ------------------------------------------------------------------------------------
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 # PIPELINE 
 
 Implementing CI-CD  from the level of code.
@@ -924,105 +901,5 @@ http://13.126.45.247:8080/prodenv/
 
 +++++++++++++++++++++++++++++++++++++++++++++
 
-Script
----------
-node('master')
-
-{
-
-stage('Continuous Download') 
-   
-	 {
-	
-    git 'https://github.com/sunildevops77/maven.git'
-    
-	}
-
-stage('Continuous build') 
-   
-	 {
-	
-   sh label: '', script: 'mvn package'
-	}
-
-stage('Continuous Deployment') 
-   
-	 {
-	
- sh label: '', script: 'scp  /home/ubuntu/.jenkins/workspace/ScriptedPipeline/webapp/target/webapp.war  ubuntu@172.31.21.16:/var/lib/tomcat8/webapps/qaenv.war'
-	}
-stage('Continuous Testing') 
-   
-	 {
-	sh label: '', script: 'echo "Testing Passed"'
-	}
-stage('Continuous Delivery') 
-   
-	 {
-	sh label: '', script: 'scp  /home/ubuntu/.jenkins/workspace/ScriptedPipeline/webapp/target/webapp.war  ubuntu@172.31.28.16:/var/lib/tomcat8/webapps/prodenv.war'
-	}
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+### Script syntax for jenkins file
+[jenkins syntax.txt](https://github.com/dayasanjay/jenkins/files/7969140/jenkins.syntax.txt)
